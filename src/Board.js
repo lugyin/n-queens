@@ -152,8 +152,12 @@
       var currentplace = majorDiagonalColumnIndexAtFirstRow;
       var rowsArray = this.rows();
       var count = 0;
-      for(var i = 0; i < rowsArray[0].length - currentplace;i++){
-        count += rowsArray[i][i + currentplace];
+      var val;
+      for(var i = 0; i < rowsArray[0].length;i++){
+        val = (rowsArray[i][i + currentplace]);
+        if(val!== undefined){
+          count += val;
+        }
       }
 
       return count > 1; // fixme
@@ -161,6 +165,20 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      //check rowsArray.length to find n
+       //calculate negative index equation (2 - n)
+       //iterate from negative index value to it's absolute value
+
+    var rowsArray = this.rows();
+    var rowSize = rowsArray.length;
+    var negIdx = (2 - rowSize);
+
+    for(var i = negIdx; i < Math.abs(negIdx); i++){
+      if(this.hasMajorDiagonalConflictAt(i)){
+        return true;
+      }
+    }
+
       return false; // fixme
     },
 
@@ -175,15 +193,32 @@
       var currentplace = minorDiagonalColumnIndexAtFirstRow;
       var rowsArray = this.rows();
       var count = 0;
-      for(var i = 0; i <= currentplace; i++){
-        count += rowsArray[i][currentplace-i]
-      }
+      var val;
+      for(var i = 0; i < rowsArray.length; i++){
+        val = rowsArray[i][currentplace - i];
+        if(val !== undefined){
+          count += val;
+            if(count > 1){
+              return true;
+            }
+          }
+        }
       return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var rowsArray = this.rows();
+      var rowSize = rowsArray.length;
+      var endIdx = (rowSize - 2)*(2) + 1;
+
+      for(var i = 1; i <= endIdx; i++){
+        if(this.hasMinorDiagonalConflictAt(i)){
+          return true;
+        }
+      }
+
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
